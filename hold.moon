@@ -11,8 +11,9 @@ class Cache
         @DefaultTTL = Value
 
     set: (Key, Value, TTL = @DefaultTTL) =>
-        if Value == nil and @has Key
-            return @del Key
+        if Value == nil
+            @del Key if @has Key
+            return
 
         @data[Key] = {
             time: os.time! + TTL

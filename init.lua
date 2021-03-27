@@ -11,8 +11,11 @@ do
       if TTL == nil then
         TTL = self.DefaultTTL
       end
-      if Value == nil and self:has(Key) then
-        return self:del(Key)
+      if Value == nil then
+        if self:has(Key) then
+          self:del(Key)
+        end
+        return 
       end
       self.data[Key] = {
         time = os.time() + TTL,
