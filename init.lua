@@ -94,6 +94,14 @@ do
       for K, V in pairs(Map) do
         self:set(K, V, TTL)
       end
+    end,
+    fetch = function(self, Key, Getter, TTL)
+      if self:has(Key) then
+        return self:get(Key)
+      end
+      local Value = Getter()
+      self:set(Key, Value, TTL)
+      return Value
     end
   }
   _base_0.__index = _base_0

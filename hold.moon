@@ -53,3 +53,12 @@ class Cache
     -- Multiple
     mget: (Keys) => {K, @get K for K in *Keys}
     mset: (Map, TTL) => @set K, V, TTL for K, V in pairs Map
+
+    -- Advanced
+    fetch: (Key, Getter, TTL) =>
+        if @has Key
+            return @get Key
+
+        Value = Getter!
+        @set Key, Value, TTL
+        Value
