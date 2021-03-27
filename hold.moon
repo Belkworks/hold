@@ -47,4 +47,4 @@ class Cache
 
     -- Multiple
     mget: (Keys) => {K, @get K for K in *Keys}
-    mset: (Keys, TTL) => {K, @set K, V, TTL for K, V in pairs Keys}
+    mset: (Map, TTL) => @set K, V, TTL for K, V in pairs Map

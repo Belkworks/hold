@@ -85,12 +85,10 @@ do
       end
       return _tbl_0
     end,
-    mset = function(self, Keys, TTL)
-      local _tbl_0 = { }
-      for K, V in pairs(Keys) do
-        _tbl_0[K] = self:set(K, V, TTL)
+    mset = function(self, Map, TTL)
+      for K, V in pairs(Map) do
+        self:set(K, V, TTL)
       end
-      return _tbl_0
     end
   }
   _base_0.__index = _base_0
