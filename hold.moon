@@ -47,8 +47,12 @@ class Cache
 
     ttl: (Key, TTL = @DefaultTTL) =>
         return false unless @has Key
-        return @expire Key if TTL <= 0
+        if TTL <= 0
+            @expire Key
+            return true
+
         @data[Key].time = os.time! + TTL
+        true
 
     -- Multiple
     mget: (Keys) => {K, @get K for K in *Keys}

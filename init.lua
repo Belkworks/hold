@@ -78,9 +78,11 @@ do
         return false
       end
       if TTL <= 0 then
-        return self:expire(Key)
+        self:expire(Key)
+        return true
       end
       self.data[Key].time = os.time() + TTL
+      return true
     end,
     mget = function(self, Keys)
       local _tbl_0 = { }
