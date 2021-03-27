@@ -62,3 +62,7 @@ class Cache
         Value = Getter!
         @set Key, Value, TTL
         Value
+
+    run: (Key, Fn) =>
+        return unless @has Key
+        Fn @get Key

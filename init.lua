@@ -102,6 +102,12 @@ do
       local Value = Getter()
       self:set(Key, Value, TTL)
       return Value
+    end,
+    run = function(self, Key, Fn)
+      if not (self:has(Key)) then
+        return 
+      end
+      return Fn(self:get(Key))
     end
   }
   _base_0.__index = _base_0
