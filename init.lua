@@ -77,7 +77,7 @@ do
       if not (self:has(Key)) then
         return false
       end
-      if TTL < 0 then
+      if TTL <= 0 then
         return self:expire(Key)
       end
       self.data[Key].time = os.time() + TTL

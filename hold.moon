@@ -47,7 +47,7 @@ class Cache
 
     ttl: (Key, TTL = @DefaultTTL) =>
         return false unless @has Key
-        return @expire Key if TTL < 0
+        return @expire Key if TTL <= 0
         @data[Key].time = os.time! + TTL
 
     -- Multiple
