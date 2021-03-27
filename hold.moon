@@ -59,14 +59,14 @@ class Cache
     mset: (Map, TTL) => @set K, V, TTL for K, V in pairs Map
 
     -- Advanced
-    fetch: (Key, Getter, TTL) =>
+    fetch: (Key, Getter, TTL, ...) =>
         if @has Key
             return @get Key
 
-        Value = Getter!
+        Value = Getter Key, ...
         @set Key, Value, TTL
         Value
 
     run: (Key, Fn) =>
         return unless @has Key
-        Fn @get Key
+        Fn @get(Key), Key

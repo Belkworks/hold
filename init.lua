@@ -97,11 +97,11 @@ do
         self:set(K, V, TTL)
       end
     end,
-    fetch = function(self, Key, Getter, TTL)
+    fetch = function(self, Key, Getter, TTL, ...)
       if self:has(Key) then
         return self:get(Key)
       end
-      local Value = Getter()
+      local Value = Getter(Key, ...)
       self:set(Key, Value, TTL)
       return Value
     end,
@@ -109,7 +109,7 @@ do
       if not (self:has(Key)) then
         return 
       end
-      return Fn(self:get(Key))
+      return Fn(self:get(Key), Key)
     end
   }
   _base_0.__index = _base_0
