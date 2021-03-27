@@ -2,6 +2,11 @@ local Cache
 do
   local _class_0
   local _base_0 = {
+    setDefaultTTL = function(self, Value)
+      local Number = tonumber(Default)
+      assert(Number, 'setDefaultTTL expects a number!')
+      self.DefaultTTL = Value
+    end,
     set = function(self, Key, Value, TTL)
       if TTL == nil then
         TTL = self.DefaultTTL

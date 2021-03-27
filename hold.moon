@@ -5,6 +5,11 @@ class Cache
     new: (@DefaultTTL = 60*10) =>
         @data = {}
 
+    setDefaultTTL: (Value) =>
+        Number = tonumber Default
+        assert Number, 'setDefaultTTL expects a number!'
+        @DefaultTTL = Value
+
     set: (Key, Value, TTL = @DefaultTTL) =>
         if Value == nil and @has Key
             return @del Key
