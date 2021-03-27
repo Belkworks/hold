@@ -6,6 +6,9 @@ do
       if TTL == nil then
         TTL = self.DefaultTTL
       end
+      if Value == nil and self:has(Key) then
+        return self:del(Key)
+      end
       self.data[Key] = {
         time = os.time() + TTL,
         value = Value
