@@ -19,13 +19,13 @@ class Cache
             value: Value
         }
 
-    expire: (Key) => @data[Key] = nil -- Why are these separate?
+    _expire: (Key) => @data[Key] = nil -- Why are these separate?
     del: (Key) => @data[Key] = nil -- So you can extend Cache!
 
     has: (Key) =>
         if E = @data[Key]
             return true if E.time > os.time!
-            @expire Key
+            @_expire Key
 
         false
 
@@ -41,7 +41,7 @@ class Cache
 
     clean: =>
         now = os.time!
-        @expire i for i, k in pairs @data when k.time > now
+        @_expire i for i, k in pairs @data when k.time > now
 
     keys: => [k for k in pairs @data when @has k]
 

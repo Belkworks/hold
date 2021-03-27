@@ -19,7 +19,7 @@ do
         value = Value
       }
     end,
-    expire = function(self, Key)
+    _expire = function(self, Key)
       self.data[Key] = nil
     end,
     del = function(self, Key)
@@ -32,7 +32,7 @@ do
           if E.time > os.time() then
             return true
           end
-          self:expire(Key)
+          self:_expire(Key)
         end
       end
       return false
@@ -55,7 +55,7 @@ do
       local now = os.time()
       for i, k in pairs(self.data) do
         if k.time > now then
-          self:expire(i)
+          self:_expire(i)
         end
       end
     end,
