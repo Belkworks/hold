@@ -1,14 +1,19 @@
 -- hold.moon
 -- SFZILabs 2021
 
+TenMinutes = 60*10
+
 class Cache
-    new: (@DefaultTTL = 60*10) =>
-        @data = {}
+    new: (DefaultTTL, @data = {}) =>
+        assert ('table' == type @data),
+            'cache: constructor expects a table for arg#2!'
+
+        @setDefaultTTL DefaultTTL or TenMinutes
 
     setDefaultTTL: (Value) =>
-        Number = tonumber Default
+        Number = tonumber Value
         assert Number, 'setDefaultTTL expects a number!'
-        @DefaultTTL = Value
+        @DefaultTTL = Number
 
     set: (Key, Value, TTL = @DefaultTTL) =>
         if Value == nil
@@ -57,6 +62,7 @@ class Cache
 
     -- Multiple
     mget: (Keys) => {K, @get K for K in *Keys}
+    mtake: (Keys) => {K, @take K for K in *Keys}
     mset: (Map, TTL) => @set K, V, TTL for K, V in pairs Map
 
     -- Advanced
@@ -71,3 +77,6 @@ class Cache
     run: (Key, Fn) =>
         return unless @has Key
         Fn @get(Key), Key
+
+    getState: => @data
+    setState: (@data) =>

@@ -1,11 +1,12 @@
+local TenMinutes = 60 * 10
 local Cache
 do
   local _class_0
   local _base_0 = {
     setDefaultTTL = function(self, Value)
-      local Number = tonumber(Default)
+      local Number = tonumber(Value)
       assert(Number, 'setDefaultTTL expects a number!')
-      self.DefaultTTL = Value
+      self.DefaultTTL = Number
     end,
     set = function(self, Key, Value, TTL)
       if TTL == nil then
@@ -95,6 +96,14 @@ do
       end
       return _tbl_0
     end,
+    mtake = function(self, Keys)
+      local _tbl_0 = { }
+      for _index_0 = 1, #Keys do
+        local K = Keys[_index_0]
+        _tbl_0[K] = self:take(K)
+      end
+      return _tbl_0
+    end,
     mset = function(self, Map, TTL)
       for K, V in pairs(Map) do
         self:set(K, V, TTL)
@@ -113,16 +122,23 @@ do
         return 
       end
       return Fn(self:get(Key), Key)
+    end,
+    getState = function(self)
+      return self.data
+    end,
+    setState = function(self, data)
+      self.data = data
     end
   }
   _base_0.__index = _base_0
   _class_0 = setmetatable({
-    __init = function(self, DefaultTTL)
-      if DefaultTTL == nil then
-        DefaultTTL = 60 * 10
+    __init = function(self, DefaultTTL, data)
+      if data == nil then
+        data = { }
       end
-      self.DefaultTTL = DefaultTTL
-      self.data = { }
+      self.data = data
+      assert(('table' == type(self.data)), 'cache: constructor expects a table for arg#2!')
+      return self:setDefaultTTL(DefaultTTL or TenMinutes)
     end,
     __base = _base_0,
     __name = "Cache"
