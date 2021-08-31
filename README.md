@@ -13,7 +13,7 @@ Cache = NEON:github('belkworks', 'hold')
 
 To create a cache, call **Cache**.  
 The TTL defaults to 10 minutes (600 seconds).  
-`Cache(default TTL in seconds) -> Cache`
+`Cache(default TTL (in seconds), state) -> Cache`
 ```lua
 cache = Cache()
 -- or,
