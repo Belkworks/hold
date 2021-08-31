@@ -75,8 +75,8 @@ class Cache
         Value
 
     run: (Key, Fn) =>
-        return unless @has Key
-        Fn @get(Key), Key
+        if Value = @get Key
+            Fn Value, Key
 
     getState: => @data
     setState: (@data) =>
