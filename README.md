@@ -98,6 +98,12 @@ Sets the default TTL for the cache.
 cache:setDefaultTTL(60 * 4) -- default ttl is now 4 minutes
 ```
 
+**setTimeSource**: `cache:setTimeSource(function) -> nil`  
+Sets the time source for the cache.
+```lua
+cache:setTimeSource(tick) -- to use the ROBLOX `tick` function
+```
+
 **has**: `cache:has(key) -> boolean`  
 Returns true if a value at `key` exists.
 ```lua
