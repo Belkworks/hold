@@ -8,8 +8,10 @@ class Cache
         assert ('table' == type @data),
             'cache: constructor expects a table for arg#2!'
 
+        @TimeSource = os.time
         @setDefaultTTL DefaultTTL or TenMinutes
 
+    setTimeSource: (@TimeSource) =>
     setDefaultTTL: (Value) =>
         Number = tonumber Value
         assert Number, 'setDefaultTTL expects a number!'
@@ -21,7 +23,7 @@ class Cache
             return
 
         @data[Key] = {
-            time: os.time! + TTL
+            time: @TimeSource! + TTL
             value: Value
         }
 
@@ -30,7 +32,7 @@ class Cache
 
     has: (Key) =>
         if E = @data[Key]
-            return true if E.time > os.time!
+            return true if E.time > @TimeSource!
             @_expire Key
 
         false
@@ -46,7 +48,7 @@ class Cache
         Value
 
     clean: =>
-        now = os.time!
+        now = @TimeSource!
         @_expire i for i, k in pairs @data when k.time > now
 
     keys: => [k for k in pairs @data when @has k]
@@ -57,7 +59,7 @@ class Cache
             @expire Key
             return true
 
-        @data[Key].time = os.time! + TTL
+        @data[Key].time = @TimeSource! + TTL
         true
 
     -- Multiple
