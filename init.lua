@@ -3,6 +3,9 @@ local Cache
 do
   local _class_0
   local _base_0 = {
+    setTimeSource = function(self, TimeSource)
+      self.TimeSource = TimeSource
+    end,
     setDefaultTTL = function(self, Value)
       local Number = tonumber(Value)
       assert(Number, 'setDefaultTTL expects a number!')
@@ -19,7 +22,7 @@ do
         return 
       end
       self.data[Key] = {
-        time = os.time() + TTL,
+        time = self:TimeSource() + TTL,
         value = Value
       }
     end,
@@ -33,7 +36,7 @@ do
       do
         local E = self.data[Key]
         if E then
-          if E.time > os.time() then
+          if E.time > self:TimeSource() then
             return true
           end
           self:_expire(Key)
@@ -56,7 +59,7 @@ do
       return Value
     end,
     clean = function(self)
-      local now = os.time()
+      local now = self:TimeSource()
       for i, k in pairs(self.data) do
         if k.time > now then
           self:_expire(i)
@@ -85,7 +88,7 @@ do
         self:expire(Key)
         return true
       end
-      self.data[Key].time = os.time() + TTL
+      self.data[Key].time = self:TimeSource() + TTL
       return true
     end,
     mget = function(self, Keys)
@@ -118,10 +121,12 @@ do
       return Value
     end,
     run = function(self, Key, Fn)
-      if not (self:has(Key)) then
-        return 
+      do
+        local Value = self:get(Key)
+        if Value then
+          return Fn(Value, Key)
+        end
       end
-      return Fn(self:get(Key), Key)
     end,
     getState = function(self)
       return self.data
@@ -138,6 +143,7 @@ do
       end
       self.data = data
       assert(('table' == type(self.data)), 'cache: constructor expects a table for arg#2!')
+      self.TimeSource = os.time
       return self:setDefaultTTL(DefaultTTL or TenMinutes)
     end,
     __base = _base_0,
