@@ -16,6 +16,4 @@ type Cache = {
 	setState: (state: { [string]: any }) -> nil
 }
 
-type ENV = {
-	Cache: () -> Cache
-}
+type PKG = () -> Cache
